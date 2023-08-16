@@ -22,7 +22,7 @@ jobs:
         
     - name: Activate Unity License
       run: |
-        $activationArgs = "-batchmode -quit -logFile -serial $env:UNITY_SERIAL -username $env:UNITY_USERNAME -password $env:UNITY_PASSWORD"
+        $activationArgs = "-serial $env:UNITY_SERIAL -username $env:UNITY_USERNAME -password $env:UNITY_PASSWORD"
         Invoke-Expression "$env:UNITY_BIN $activationArgs"
       shell: pwsh
 
