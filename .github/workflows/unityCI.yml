@@ -16,6 +16,13 @@ jobs:
       with:
         unityVersion: 2020.3.18f1  # Specify the Unity version you're using
 
+    - name: Set up Unity
+      run: |
+        # Download and install Unity Hub
+        curl -s "https://public-cdn.cloud.unity3d.com/hub/prod/UnityHub.AppImage" -o UnityHub.AppImage
+        chmod +x UnityHub.AppImage
+        ./UnityHub.AppImage -- --headless install --version 2020.3.18f1
+        
     - name: Build Unity project
       run: |
         unity -batchmode -projectPath C:\Users\yhyya\scc\Unity-UnitTestingPong -executeMethod BuildScript.Build
