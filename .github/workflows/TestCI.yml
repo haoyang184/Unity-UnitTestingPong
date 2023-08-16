@@ -20,9 +20,16 @@ jobs:
       run: |
         $env:UNITY_BIN = "${env:UNITY_HOME}\Editor\Unity.exe"
         
-    - name: Activate Unity License
-      run: |
-        $activationArgs = "-serial $env:UNITY_SERIAL -username $env:UNITY_USERNAME -password $env:UNITY_PASSWORD"      shell: pwsh
+    - name: Activate & Build Unity Using a Command Prompt
+      run: | 
+          cmd.exe /c "$env:UNITY_HOME\\Unity.exe" ^
+            -batchmode -quit -logFile ^
+            -projectPath . ^
+            -executeMethod BuildScript.BuildWindows ^
+            -nographics ^
+            -serial $env:UNITY_SERIAL ^
+            -username $env:UNITY_EMAIL ^
+            -password $env:UNITY_PASSWORD
 
     - name: Run Unit Tests
       run: $env:UNITY_BIN -executeMethod Runner.RunUnitTests -logFile -nographics -projectPath . -testsOutput tests.xml
