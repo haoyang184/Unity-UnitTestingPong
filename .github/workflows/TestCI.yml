@@ -7,6 +7,13 @@ jobs:
   build:
     runs-on: windows-latest
 
+    strategy:
+      fail-fast: false
+      matrix:
+            projectPath: [/Unity-UnitTestingPong]
+            unityVersion: [2020.3.18f1]
+            targetPlatform: [StandaloneWindows64] # Build a Windows 64-bit standalone
+    
     env:
       UNITY_SERIAL: ${{ secrets.UNITY_SERIAL }}
       UNITY_USERNAME: ${{ secrets.UNITY_USERNAME }}
@@ -15,12 +22,6 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-
-    - name: Set up Unity
-      uses: game-ci/setup-unity@v1
-      with:
-         unityVersion: 2020.3.18f1  # Specify the Unity version
-         unityLicense: ${{ secrets.UNITY_LICENSE }}
 
     - name: Unity - Test Runner
       uses: game-ci/unity-test-runner@v2
