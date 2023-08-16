@@ -1,0 +1,32 @@
+name: Unity CI
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # You can choose a different runner based on your needs
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Unity
+      uses: game-ci/unity/setup@v2
+      with:
+        unityVersion: 2020.3.18f1  # Specify the Unity version you're using
+
+    - name: Build Unity project
+      run: |
+        unity -batchmode -projectPath C:\Users\yhyya\scc\Unity-UnitTestingPong -executeMethod BuildScript.Build
+
+    - name: Run tests and generate XML results
+      run: |
+        nunit3-console C:\Users\yhyya\scc\Unity-UnitTestingPong\Assets\Tests\EditorTests\Runner.cs --result=./TestResults/TestResult.xml;format=nunit2
+
+
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: build-artifacts
+        path: C:\Users\yhyya\scc\Unity-UnitTestingPong
