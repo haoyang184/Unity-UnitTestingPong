@@ -20,15 +20,11 @@ jobs:
       run: |
         $env:UNITY_BIN = "${env:UNITY_HOME}\Editor\Unity.exe"
 
-    - name: Request manual activation file
-      id: getManualLicenseFile
-      uses: game-ci/unity-request-activation-file@v2
-      # Upload artifact (Unity_v20XX.X.XXXX.alf)
-    - name: Expose as artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: ${{ steps.getManualLicenseFile.outputs.filePath }}
-        path: ${{ steps.getManualLicenseFile.outputs.filePath }}
+    - name: Activate Unity License
+      run: |
+        $env:UNITY_BIN -batchmode -quit -logFile -serial $env:UNITY_SERIAL -username $env:UNITY_USERNAME -password $env:UNITY_PASSWORD
+      shell: pwsh
+
         
     - name: Run Unit Tests
       run: $env:UNITY_BIN -executeMethod Runner.RunUnitTests -logFile -nographics -projectPath . -testsOutput tests.xml
