@@ -22,9 +22,7 @@ jobs:
         
     - name: Activate Unity License
       run: |
-        $activationArgs = "-serial $env:UNITY_SERIAL -username $env:UNITY_USERNAME -password $env:UNITY_PASSWORD"
-        Invoke-Expression "$env:UNITY_BIN $activationArgs"
-      shell: pwsh
+        $activationArgs = "-serial $env:UNITY_SERIAL -username $env:UNITY_USERNAME -password $env:UNITY_PASSWORD"      shell: pwsh
 
     - name: Run Unit Tests
       run: $env:UNITY_BIN -executeMethod Runner.RunUnitTests -logFile -nographics -projectPath . -testsOutput tests.xml
