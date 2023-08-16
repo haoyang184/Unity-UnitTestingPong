@@ -17,18 +17,17 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Set up Unity
-      run: |
-        $env:UNITY_BIN = "${env:UNITY_HOME}\Editor\Unity.exe"
-            
-    - name : Unity - Test Runner
-      uses: game-ci/unity-test-runner@v2
-      env:
-        UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}  
+      uses: game-ci/setup-unity@v1
       with:
-        unityVersion: 2020.3.18f1
-        projectPath: C:/Users/yhyya/scc/Unity-UnitTestingPong/Assets/Tests/EditorTests
-        githubToken: ${{ secrets.GITHUB_TOKEN }}
+         unityVersion: 2020.3.18f1  # Specify the Unity version
+         unityLicense: ${{ secrets.UNITY_LICENSE }}
 
+    - name: Unity - Test Runner
+      uses: game-ci/unity-test-runner@v2
+      with:
+         projectPath: Unity-UnitTestingPong/Assets/Tests/EditorTests  # Adjust the path to your tests
+         githubToken: ${{ secrets.GITHUB_TOKEN }}
+         
     - name: Upload Artifacts
       uses: actions/upload-artifact@v2
       with:
