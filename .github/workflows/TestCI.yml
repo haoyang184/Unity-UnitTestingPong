@@ -19,24 +19,18 @@ jobs:
     - name: Set up Unity
       run: |
         $env:UNITY_BIN = "${env:UNITY_HOME}\Editor\Unity.exe"
-        
-    - name: Activate & Build Unity Using a Command Prompt
-      run: | 
-          cmd.exe /c "$env:UNITY_HOME\\Unity.exe" ^
-            -batchmode -quit -logFile ^
-            -projectPath . ^
-            -executeMethod BuildScript.BuildWindows ^
-            -nographics ^
-            -serial $env:UNITY_SERIAL ^
-            -username $env:UNITY_EMAIL ^
-            -password $env:UNITY_PASSWORD
 
-    - name: Run Unit Tests
-      run: $env:UNITY_BIN -executeMethod Runner.RunUnitTests -logFile -nographics -projectPath . -testsOutput tests.xml
-      continue-on-error: true  # Tests may fail but we want to continue
-
-    - name: Build
-      run: $env:UNITY_BIN -batchmode -quit -logFile -projectPath . -executeMethod BuildScript.BuildWindows -nographics
+    - name: Unity - Request Activation File
+      uses: game-ci/unity-request-activation-file@v2.0.0
+            
+    - name : Unity - Test Runner
+      uses: game-ci/unity-test-runner@v2
+      env:
+        UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}  
+      with:
+        unityVersion: 2020.3.18f1
+        projectPath: C:/Users/yhyya/scc/Unity-UnitTestingPong/Assets/Tests/EditorTests
+        githubToken: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Upload Artifacts
       uses: actions/upload-artifact@v2
