@@ -1,0 +1,41 @@
+name: Unity Windows Workflow
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    env:
+      UNITY_SERIAL: ${{ secrets.UNITY_SERIAL }}
+      UNITY_USERNAME: ${{ secrets.UNITY_USERNAME }}
+      UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Unity
+      run: |
+        $env:UNITY_BIN = "${env:UNITY_HOME}\Editor\Unity.exe"
+
+    - name: Activate License
+      run: $env:UNITY_BIN -batchmode -quit -logFile -serial $env:UNITY_SERIAL -username $env:UNITY_USERNAME -password $env:UNITY_PASSWORD
+
+    - name: Run Unit Tests
+      run: $env:UNITY_BIN -batchmode -executeMethod Runner.RunUnitTests -logFile -nographics -projectPath . -testsOutput tests.xml
+      continue-on-error: true  # Tests may fail but we want to continue
+
+    - name: Build
+      run: $env:UNITY_BIN -batchmode -quit -logFile -projectPath . -executeMethod BuildScript.BuildWindows -nographics
+
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: build-artifacts
+        path: |
+          windows/UnitTestingPong.exe
+          tests.xml
