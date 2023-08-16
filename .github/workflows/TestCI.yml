@@ -21,10 +21,10 @@ jobs:
         $env:UNITY_BIN = "${env:UNITY_HOME}\Editor\Unity.exe"
 
     - name: Activate License
-      run: $env:UNITY_BIN -batchmode -quit -logFile -serial $env:UNITY_SERIAL -username $env:UNITY_USERNAME -password $env:UNITY_PASSWORD
+      run: $env:UNITY_BIN -quit -logFile -serial $env:UNITY_SERIAL -username $env:UNITY_USERNAME -password $env:UNITY_PASSWORD
 
     - name: Run Unit Tests
-      run: $env:UNITY_BIN -batchmode -executeMethod Runner.RunUnitTests -logFile -nographics -projectPath . -testsOutput tests.xml
+      run: $env:UNITY_BIN -executeMethod Runner.RunUnitTests -logFile -nographics -projectPath . -testsOutput tests.xml
       continue-on-error: true  # Tests may fail but we want to continue
 
     - name: Build
