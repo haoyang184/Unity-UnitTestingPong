@@ -21,7 +21,7 @@ jobs:
         $env:UNITY_BIN = "${env:UNITY_HOME}\Editor\Unity.exe"
 
     - name: Activate License
-      run: $env:UNITY_BIN -quit -logFile -serial $env:UNITY_SERIAL -username $env:UNITY_USERNAME -password $env:UNITY_PASSWORD
+      run: $env:UNITY_BIN -logFile -serial $env:UNITY_SERIAL -username $env:UNITY_USERNAME -password $env:UNITY_PASSWORD
 
     - name: Run Unit Tests
       run: $env:UNITY_BIN -executeMethod Runner.RunUnitTests -logFile -nographics -projectPath . -testsOutput tests.xml
