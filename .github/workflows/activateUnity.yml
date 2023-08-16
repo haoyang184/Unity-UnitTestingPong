@@ -21,7 +21,7 @@ jobs:
       
       - uses: actions/download-artifact@v3
         with:
-          name: my-artifact
+          name: Unity_v2019.2.11f1.alf
           
       - name: Display structure of downloaded files
         run: ls -R
