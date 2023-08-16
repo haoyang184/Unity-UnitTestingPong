@@ -19,9 +19,6 @@ jobs:
     - name: Set up Unity
       run: |
         $env:UNITY_BIN = "${env:UNITY_HOME}\Editor\Unity.exe"
-
-    - name: Unity - Request Activation File
-      uses: game-ci/unity-request-activation-file@v2.0.0
             
     - name : Unity - Test Runner
       uses: game-ci/unity-test-runner@v2
