@@ -4,30 +4,40 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
-    runs-on: windows-latest
-
+  testAllModes:
+    name: Test in ${{ matrix.testMode }}
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-            projectPath: [/Unity-UnitTestingPong]
-            unityVersion: [2020.3.18f1]
-            targetPlatform: [StandaloneWindows64] # Build a Windows 64-bit standalone
-
+        projectPath:
+          - test-package
+        unityVersion: [2020.3.18f1]
+        testMode:
+          - editmode
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2           
-
-    - name: Unity - Test Runner
-      uses: game-ci/unity-test-runner@v2
-      with:
-        unityVersion: 2020.3.18f1
-        projectPath: Unity-UnitTestingPong/Assets/Tests/EditorTests  # Adjust the path to your tests
-        githubToken: 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
-        
-    - name: Upload Artifacts
-      uses: actions/upload-artifact@v2
-      if: always()
-      with:
-        name: Test results
-        path: artifacts
+      - uses: actions/checkout@v2
+        with:
+          lfs: true
+      - uses: game-ci/unity-test-runner@v2
+        id: tests
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+        with:
+          projectPath: ${{ matrix.projectPath }}
+          unityVersion: ${{ matrix.unityVersion }}
+          testMode: ${{ matrix.testMode }}
+          artifactsPath: ${{ matrix.testMode }}-artifacts
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          checkName: ${{ matrix.testMode }} Test Results
+          coverageOptions: 'generateAdditionalMetrics;generateHtmlReport;generateBadgeReport;assemblyFilters:+my.assembly.*'
+      - uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: Test results for ${{ matrix.testMode }}
+          path: ${{ steps.tests.outputs.artifactsPath }}
+      - uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: Coverage results for ${{ matrix.testMode }}
+          path: ${{ steps.tests.outputs.coveragePath }}
