@@ -35,7 +35,6 @@ jobs:
       - uses: game-ci/unity-test-runner@v2
         id: testRunner
         with:
-          projectPath: Unity-UnitTestingPong
           testMode: editmode
 
       # Upload artifact
