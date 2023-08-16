@@ -1,7 +1,7 @@
-name: Actions 😎
+name: Actions
 
 on: 
-  workload_disptach:
+  workflow_disptach:
 
 jobs:
   buildAndTestForLinuxBasedPlatforms:
