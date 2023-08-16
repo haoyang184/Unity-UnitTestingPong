@@ -13,26 +13,24 @@ jobs:
             projectPath: [/Unity-UnitTestingPong]
             unityVersion: [2020.3.18f1]
             targetPlatform: [StandaloneWindows64] # Build a Windows 64-bit standalone
-    
-    env:
-      UNITY_SERIAL: ${{ secrets.UNITY_SERIAL }}
-      UNITY_USERNAME: ${{ secrets.UNITY_USERNAME }}
-      UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
 
+    - name: Unity - Request Activation File
+      uses: game-ci/unity-request-activation-file@v2.0.0            
+
     - name: Unity - Test Runner
       uses: game-ci/unity-test-runner@v2
       with:
-         projectPath: Unity-UnitTestingPong/Assets/Tests/EditorTests  # Adjust the path to your tests
-         githubToken: ${{ secrets.GITHUB_TOKEN }}
-         
+        unityVersion: 2020.3.18f1
+        projectPath: Unity-UnitTestingPong/Assets/Tests/EditorTests  # Adjust the path to your tests
+        githubToken: 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
+        
     - name: Upload Artifacts
       uses: actions/upload-artifact@v2
+      if: always()
       with:
-        name: build-artifacts
-        path: |
-          windows/UnitTestingPong.exe
-          tests.xml
+        name: Test results
+        path: artifacts
