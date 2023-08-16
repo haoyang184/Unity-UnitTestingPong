@@ -28,7 +28,7 @@ jobs:
           unityVersion: ${{ matrix.unityVersion }}
           testMode: ${{ matrix.testMode }}
           artifactsPath: ${{ matrix.testMode }}-artifacts
-          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          githubToken: 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
           checkName: ${{ matrix.testMode }} Test Results
           coverageOptions: 'generateAdditionalMetrics;generateHtmlReport;generateBadgeReport;assemblyFilters:+my.assembly.*'
       - uses: actions/upload-artifact@v2
