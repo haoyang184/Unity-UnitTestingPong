@@ -16,12 +16,3 @@ jobs:
         with:
           name: ${{ steps.getManualLicenseFile.outputs.filePath }}
           path: ${{ steps.getManualLicenseFile.outputs.filePath }}
-
-      - uses: actions/checkout@v3
-      
-      - uses: actions/download-artifact@v3
-        with:
-          name: Unity_v2019.2.11f1.alf
-          
-      - name: Display structure of downloaded files
-        run: ls -R
